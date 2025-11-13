@@ -1,0 +1,6 @@
+{
+  "name": "Secure Text Vault",
+  "description": "A client-side application to write, encrypt, and decrypt text notes securely. All operations are done in your browser, and no data is ever sent to a server.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
