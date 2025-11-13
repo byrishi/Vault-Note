@@ -2,7 +2,7 @@
 
 **VaultNote** — a local-first, browser-based encrypted notes app.
 
-![VaultNote screenshot](./public/screenshot.png)
+![VaultNote screenshot](https://res.cloudinary.com/dvfcmsymt/image/upload/v1763048209/Screenshot_2025-11-13_205003_iscci5.png)
 
 VaultNote is built with modern web tech (Vite + React + TypeScript). It performs all cryptographic operations **locally in the browser** using the Web Crypto API (AES-GCM). No data is sent to any server by default.
 
