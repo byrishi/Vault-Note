@@ -2,6 +2,7 @@
 **VaultNote** — a local-first, browser-based encrypted notes app.
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/byrishi/Vault-Note)
+[![Better Stack Badge](https://uptime.betterstack.com/status-badges/v1/monitor/20pds.svg)](https://uptime.betterstack.com/?utm_source=status_badge)
 ![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)
 ![Zero Knowledge](https://img.shields.io/badge/Zero--Knowledge-True-success)
 ![AES-256](https://img.shields.io/badge/Encryption-AES--256-orange)
