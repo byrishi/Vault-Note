@@ -1,4 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
-  <rect width="240" height="240" rx="36" fill="#0f172a"/>
-  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial" font-size="36" fill="#fff">VaultNote</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <radialGradient id="seal-wax" cx="30%" cy="19%" r="88%">
+      <stop offset="0" stop-color="#789878"/>
+      <stop offset=".46" stop-color="#4d7256"/>
+      <stop offset="1" stop-color="#263f32"/>
+    </radialGradient>
+    <linearGradient id="seal-rim" x1="25" y1="18" x2="93" y2="101" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f8e6b8"/>
+      <stop offset=".48" stop-color="#c8a86b"/>
+      <stop offset="1" stop-color="#f1dbad"/>
+    </linearGradient>
+    <linearGradient id="page-ink" x1="39" y1="35" x2="83" y2="83" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fffdf0"/>
+      <stop offset="1" stop-color="#e5e8d7"/>
+    </linearGradient>
+    <clipPath id="seal-clip">
+      <path d="M110.27 60.00 L109.79 63.26 L108.58 66.40 L107.17 69.38 L106.10 72.35 L105.55 75.46 L105.27 78.75 L104.75 82.07 L103.54 85.14 L101.49 87.72 L98.87 89.83 L96.16 91.71 L93.75 93.75 L91.71 96.16 L89.83 98.87 L87.72 101.49 L85.14 103.54 L82.07 104.75 L78.75 105.27 L75.46 105.55 L72.35 106.10 L69.38 107.17 L66.40 108.58 L63.26 109.79 L60.00 110.27 L56.74 109.79 L53.60 108.58 L50.62 107.17 L47.65 106.10 L44.54 105.55 L41.25 105.27 L37.93 104.75 L34.86 103.54 L32.28 101.49 L30.17 98.87 L28.29 96.16 L26.25 93.75 L23.84 91.71 L21.13 89.83 L18.51 87.72 L16.46 85.14 L15.25 82.07 L14.73 78.75 L14.45 75.46 L13.90 72.35 L12.83 69.38 L11.42 66.40 L10.21 63.26 L9.73 60.00 L10.21 56.74 L11.42 53.60 L12.83 50.62 L13.90 47.65 L14.45 44.54 L14.73 41.25 L15.25 37.93 L16.46 34.86 L18.51 32.28 L21.13 30.17 L23.84 28.29 L26.25 26.25 L28.29 23.84 L30.17 21.13 L32.28 18.51 L34.86 16.46 L37.93 15.25 L41.25 14.73 L44.54 14.45 L47.65 13.90 L50.62 12.83 L53.60 11.42 L56.74 10.21 L60.00 9.73 L63.26 10.21 L66.40 11.42 L69.38 12.83 L72.35 13.90 L75.46 14.45 L78.75 14.73 L82.07 15.25 L85.14 16.46 L87.72 18.51 L89.83 21.13 L91.71 23.84 L93.75 26.25 L96.16 28.29 L98.87 30.17 L101.49 32.28 L103.54 34.86 L104.75 37.93 L105.27 41.25 L105.55 44.54 L106.10 47.65 L107.17 50.62 L108.58 53.60 L109.79 56.74 Z"/>
+    </clipPath>
+  </defs>
+  <path d="M110.27 60.00 L109.79 63.26 L108.58 66.40 L107.17 69.38 L106.10 72.35 L105.55 75.46 L105.27 78.75 L104.75 82.07 L103.54 85.14 L101.49 87.72 L98.87 89.83 L96.16 91.71 L93.75 93.75 L91.71 96.16 L89.83 98.87 L87.72 101.49 L85.14 103.54 L82.07 104.75 L78.75 105.27 L75.46 105.55 L72.35 106.10 L69.38 107.17 L66.40 108.58 L63.26 109.79 L60.00 110.27 L56.74 109.79 L53.60 108.58 L50.62 107.17 L47.65 106.10 L44.54 105.55 L41.25 105.27 L37.93 104.75 L34.86 103.54 L32.28 101.49 L30.17 98.87 L28.29 96.16 L26.25 93.75 L23.84 91.71 L21.13 89.83 L18.51 87.72 L16.46 85.14 L15.25 82.07 L14.73 78.75 L14.45 75.46 L13.90 72.35 L12.83 69.38 L11.42 66.40 L10.21 63.26 L9.73 60.00 L10.21 56.74 L11.42 53.60 L12.83 50.62 L13.90 47.65 L14.45 44.54 L14.73 41.25 L15.25 37.93 L16.46 34.86 L18.51 32.28 L21.13 30.17 L23.84 28.29 L26.25 26.25 L28.29 23.84 L30.17 21.13 L32.28 18.51 L34.86 16.46 L37.93 15.25 L41.25 14.73 L44.54 14.45 L47.65 13.90 L50.62 12.83 L53.60 11.42 L56.74 10.21 L60.00 9.73 L63.26 10.21 L66.40 11.42 L69.38 12.83 L72.35 13.90 L75.46 14.45 L78.75 14.73 L82.07 15.25 L85.14 16.46 L87.72 18.51 L89.83 21.13 L91.71 23.84 L93.75 26.25 L96.16 28.29 L98.87 30.17 L101.49 32.28 L103.54 34.86 L104.75 37.93 L105.27 41.25 L105.55 44.54 L106.10 47.65 L107.17 50.62 L108.58 53.60 L109.79 56.74 Z" fill="url(#seal-wax)" stroke="url(#seal-rim)" stroke-width="2.2" stroke-linejoin="round"/>
+  <g clip-path="url(#seal-clip)">
+    <path d="M60 7v106" stroke="#f6e5bd" stroke-opacity=".13" stroke-width="9"/>
+    <ellipse cx="42" cy="31" rx="27" ry="15" fill="#fff" fill-opacity=".08" transform="rotate(-28 42 31)"/>
+  </g>
+  <circle cx="60" cy="60" r="41" fill="none" stroke="#203b2e" stroke-opacity=".48" stroke-width="2.4"/>
+  <circle cx="60" cy="60" r="38" fill="none" stroke="url(#seal-rim)" stroke-opacity=".82" stroke-width="1.6"/>
+  <path d="M35 40c8-4 16-2 25 4 9-6 17-8 25-4v34c-9-3-17-1-25 5-8-6-16-8-25-5V40Z" stroke="url(#page-ink)" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="M60 44v35" stroke="url(#seal-rim)" stroke-width="2.3" stroke-linecap="round"/>
+  <path d="M42 48c5-1 9 0 13 2m-13 6c5-1 9 0 13 2m23-10c-5-1-9 0-13 2m13 6c-5-1-9 0-13 2" stroke="#f4f1df" stroke-opacity=".7" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M46 48h6l8 21 8-21h6L63 76h-6L46 48Z" fill="url(#page-ink)" stroke="#dce4d6" stroke-width=".8" stroke-linejoin="round"/>
 </svg>

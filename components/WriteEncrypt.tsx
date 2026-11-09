@@ -1,41 +1,37 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { encryptText, generateKey } from '../services/cryptoService';
-import LockClosedIcon from './icons/LockClosedIcon';
 import DocumentArrowDownIcon from './icons/DocumentArrowDownIcon';
 import ClipboardIcon from './icons/ClipboardIcon';
-import ExclamationTriangleIcon from './icons/ExclamationTriangleIcon';
 
 const WriteEncrypt: React.FC = () => {
-  const [content, setContent] = useState<string>('');
-  const [stats, setStats] = useState({ words: 0, chars: 0 });
+  const [content, setContent] = useState('');
   const [generatedKey, setGeneratedKey] = useState<string | null>(null);
   const [encryptedData, setEncryptedData] = useState<string | null>(null);
-  const [copied, setCopied] = useState<boolean>(false);
-  const [isKeyVisible, setIsKeyVisible] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [isWorking, setIsWorking] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const words = content.trim().split(/\s+/).filter(Boolean).length;
 
   useEffect(() => {
-    if (generatedKey && encryptedData) {
-      const timer = setTimeout(() => setIsKeyVisible(true), 100); // for fade-in
-      return () => clearTimeout(timer);
-    }
-  }, [generatedKey, encryptedData]);
-
-  useEffect(() => {
-    const chars = content.length;
-    const words = content.trim().split(/\s+/).filter(Boolean).length;
-    setStats({ words, chars });
-  }, [content]);
+    if (!copied) return;
+    const timer = window.setTimeout(() => setCopied(false), 2000);
+    return () => window.clearTimeout(timer);
+  }, [copied]);
 
   const handleEncrypt = useCallback(async () => {
     if (!content.trim()) return;
-    const key = generateKey();
+    setError(null);
+    setIsWorking(true);
+    window.dispatchEvent(new Event('vaultnote:stamp'));
     try {
+      const key = generateKey();
       const data = await encryptText(content, key);
       setGeneratedKey(key);
       setEncryptedData(data);
-    } catch (e) {
-      console.error("Encryption failed:", e);
-      // Optionally: set an error state to show the user.
+    } catch {
+      setError('We could not seal this note. Please try again.');
+    } finally {
+      setIsWorking(false);
     }
   }, [content]);
 
@@ -45,103 +41,58 @@ const WriteEncrypt: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `vaultnote-${Date.now()}.vault`;
+    link.download = 'vaultnote-' + Date.now() + '.vault';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   }, [encryptedData]);
-  
-  const handleCopyKey = useCallback(() => {
+
+  const handleCopyKey = useCallback(async () => {
     if (!generatedKey) return;
-    navigator.clipboard.writeText(generatedKey).then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    });
+    try {
+      await navigator.clipboard.writeText(generatedKey);
+      setCopied(true);
+    } catch {
+      setError('Clipboard access was blocked. Select and copy the key above.');
+    }
   }, [generatedKey]);
 
   const handleReset = () => {
-      setContent('');
-      setGeneratedKey(null);
-      setEncryptedData(null);
-      setCopied(false);
-      setIsKeyVisible(false);
-  }
+    setContent('');
+    setGeneratedKey(null);
+    setEncryptedData(null);
+    setCopied(false);
+    setError(null);
+  };
 
   if (generatedKey && encryptedData) {
     return (
-      <div className={`flex flex-col items-center text-center transition-opacity duration-500 ease-in-out ${isKeyVisible ? 'opacity-100' : 'opacity-0'}`}>
-        <h2 className="text-2xl font-bold text-[var(--text-strong)]">Encrypted. Archived. Yours.</h2>
-        <p className="mt-2 text-[var(--text-muted-color)]">Save your decryption key. It is not recoverable.</p>
-        
-        <div className="mt-6 w-full max-w-md bg-[var(--card-bg)] backdrop-blur-lg rounded-lg p-4 relative font-mono shadow-lg ring-1 ring-[var(--ring-color)] animate-pulse-glow-green">
-            <p className="text-xs text-[var(--text-muted-color)] uppercase font-semibold tracking-wider">Decryption Key</p>
-            <div className="flex items-center gap-4 mt-2">
-                <code className="text-[var(--success-text)] text-lg break-all flex-1 text-left select-all">{generatedKey}</code>
-                <button
-                    onClick={handleCopyKey}
-                    className="p-2 rounded-md bg-[var(--card-bg-hover)] hover:bg-white/20 text-[var(--text-muted-color)] hover:text-[var(--text-strong)] transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-[var(--accent-color)]"
-                    title="Copy Key"
-                >
-                    <ClipboardIcon className="w-5 h-5"/>
-                </button>
-            </div>
-            {copied && <div className="absolute -top-3 right-3 text-[var(--success-text)] text-xs px-2 py-0.5 rounded font-sans bg-[var(--success-bg)] animate-fade-in">Copied!</div>}
+      <div className="result-view">
+        <div className="result-icon" aria-hidden="true">✓</div>
+        <h4>Your note is sealed.</h4>
+        <p>Keep this key somewhere safe. VaultNote can’t recover it for you.</p>
+        <div className="key-card">
+          <span className="key-label">Your private key</span>
+          <div className="key-row"><code className="key-value">{generatedKey}</code><button className="copy-button" type="button" onClick={handleCopyKey} aria-label="Copy decryption key" title="Copy key"><ClipboardIcon className="w-5 h-5" /></button></div>
+          {copied && <div className="copy-feedback" role="status" aria-live="polite">Copied to clipboard</div>}
         </div>
-        
-        <div className="mt-6 p-4 rounded-lg bg-[var(--warning-bg)] backdrop-blur-lg border border-[var(--warning-border)] text-[var(--warning-text)] flex items-start gap-3 max-w-md">
-            <div className="flex-shrink-0 pt-0.5 text-[var(--warning-icon)]">
-                <ExclamationTriangleIcon className="w-5 h-5" />
-            </div>
-            <div>
-                <h3 className="font-semibold text-[var(--warning-heading)]">A Note on Privacy</h3>
-                <p className="text-sm">If you lose this key, your text cannot be recovered. We don’t keep secrets for you.</p>
-            </div>
-        </div>
-
-        <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <button
-                onClick={handleDownload}
-                className="w-full sm:w-auto flex items-center justify-center gap-2 text-[var(--accent-contrast-text)] font-bold py-3 px-6 rounded-lg transition-all duration-300 ease-in-out text-base shadow-lg shadow-[var(--accent-glow)] hover:shadow-xl hover:shadow-[0_0_20px_var(--accent-glow)] hover:scale-[1.03] bg-[var(--accent-color)] hover:bg-[var(--accent-color-hover)]"
-            >
-                <DocumentArrowDownIcon className="w-5 h-5" />
-                Download .vault File
-            </button>
-             <button
-                onClick={handleReset}
-                className="w-full sm:w-auto bg-[var(--card-bg)] hover:bg-[var(--card-bg-hover)] text-[var(--text-strong)] font-bold py-3 px-6 rounded-lg transition-all duration-300 ease-in-out text-base ring-1 ring-[var(--ring-color)]"
-            >
-                Create New Note
-            </button>
-        </div>
+        <div className="notice-card"><span aria-hidden="true">✳</span><div><strong>Keep the key separate from the file</strong>Your note cannot be opened without this key. Save it before you leave this page.</div></div>
+        {error && <p className="form-error" role="alert">{error}</p>}
+        <div className="result-actions"><button className="button button-primary button-small" type="button" onClick={handleDownload}><DocumentArrowDownIcon className="w-4 h-4" />Download .vault file</button><button className="button button-secondary button-small" type="button" onClick={handleReset}>Write another note</button></div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4 animate-fade-in">
+    <div className="note-editor-shell">
       <div>
-        <textarea
-          id="text-content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className="w-full h-80 bg-[var(--card-bg)] backdrop-blur-lg border border-[var(--ring-color)] rounded-lg p-4 text-[var(--text-color)] placeholder:text-[var(--text-muted-color)] focus:ring-2 focus:ring-[var(--accent-color)]/80 focus:border-[var(--accent-color)] focus:bg-[var(--card-bg-hover)] transition-all duration-300 ease-in-out text-base resize-y"
-          placeholder="Begin your entry. Your thoughts are ephemeral until locked."
-        />
-        <div className="text-right text-xs text-[var(--text-muted-color)] font-mono tracking-wider pr-2 mt-2">
-          {stats.chars} characters &bull; {stats.words} words
-        </div>
+        <label className="field-label" htmlFor="text-content">Your note</label>
+        <textarea id="text-content" className="note-textarea" value={content} onChange={(event) => setContent(event.target.value)} placeholder="Take a breath. Write what you want to keep private…" />
+        <div className="field-meta" aria-live="polite">{words} {words === 1 ? 'word' : 'words'} · {content.length} characters</div>
       </div>
-      <div className="flex justify-end">
-        <button
-          onClick={handleEncrypt}
-          disabled={!content.trim()}
-          className="flex items-center gap-2 text-[var(--accent-contrast-text)] font-bold py-3 px-6 rounded-lg transition-all duration-300 ease-in-out shadow-lg disabled:shadow-none disabled:scale-100 disabled:bg-[var(--disabled-bg)] disabled:text-[var(--disabled-text)] disabled:cursor-not-allowed enabled:shadow-[var(--accent-glow)] enabled:hover:shadow-xl enabled:hover:shadow-[0_0_20px_var(--accent-glow)] enabled:hover:scale-[1.03] enabled:bg-[var(--accent-color)] enabled:hover:bg-[var(--accent-color-hover)]"
-        >
-          <LockClosedIcon className="w-5 h-5" />
-          Secure & Export
-        </button>
-      </div>
+      {error && <p className="form-error" role="alert">{error}</p>}
+      <div className="form-actions"><button className={'button button-primary button-small seal-action' + (isWorking ? ' is-stamping' : '')} type="button" onClick={handleEncrypt} disabled={!content.trim() || isWorking}><img className="seal-button-mark" src="/logo.svg" alt="" aria-hidden="true" />{isWorking ? 'Sealing your note…' : 'Press the seal'}</button></div>
     </div>
   );
 };
